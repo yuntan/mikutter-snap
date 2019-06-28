@@ -19,44 +19,22 @@ plugs:
     default-provider: gnome-3-28-1804
   gtk-2-engines:
     interface: content
-    # target: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0
     target: $SNAP/lib/gtk-2.0
     default-provider: gtk2-common-themes
   gtk-2-themes:
     interface: content
     target: $SNAP/share/themes
-    # target: $SNAP/share/gtk2
-    # target: $SNAP/data-dir/themes
     default-provider: gtk-common-themes
-  # gtk-3-themes:
-  #   interface: content
-  #   target: $SNAP/usr/share/themes
-  #   default-provider: gtk-common-themes:gtk-3-themes
   icon-themes:
     interface: content
-    # target: $SNAP/usr/share/icons
     target: $SNAP/share/icons
-    # target: $SNAP/data-dir/icons
     default-provider: gtk-common-themes
   sound-themes:
     interface: content
-    # target: $SNAP/usr/share/sounds
     target: $SNAP/share/sounds
-    # target: $SNAP/data-dir/sounds
     default-provider: gtk-common-themes
 
-# layout:
-#   $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0:
-#     bind: $SNAP/lib/gtk-2.0
-#   $SNAP/usr/share/themes:
-#     bind: $SNAP/share/gtk2
-#   $SNAP/usr/share/icons:
-#     bind: $SNAP/share/icons
-#   $SNAP/usr/share/sounds:
-#     bind: $SNAP/share/sounds
-
 parts:
-  # required for various environment variables (XDG_DATA_DIRS, GTK_PATH)
   desktop-gtk2:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
@@ -97,13 +75,11 @@ apps:
     environment:
       DISABLE_BUNDLER_SETUP: 1
       GI_TYPELIB_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/girepository-1.0
-      # GTK_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0/modules
+      # environment variables for gtk2
       # see https://forum.snapcraft.io/t/improving-theme-support-for-gtk-2-apps/7693
       GTK_PATH: $SNAP/lib/gtk-2.0
       GTK_DATA_PREFIX: $SNAP
-      # XDG_DATA_DIRS: $SNAP/usr/share:$XDG_DATA_DIRS
-      # XDG_DATA_DIRS: $SNAP/data-dir:$XDG_DATA_DIRS
-      # XDG_DATA_DIRS: $SNAP/share:$XDG_DATA_DIRS
+    # set necessary environment variables (XDG_DATA_DIRS, GTK_PATH, etc)
     command: desktop-launch $SNAP/app/mikutter.rb
     plugs:
     - x11
