@@ -4,11 +4,59 @@ summary: It's moeful
 description: |
   TODO
 
+  `ln -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
+icon: mikutter.png
+license: MIT
+
 grade: devel
 confinement: strict
 base: core18
 
+plugs:
+  gnome-3-28-1804:
+    interface: content
+    target: $SNAP/gnome-platform
+    default-provider: gnome-3-28-1804
+  gtk-2-engines:
+    interface: content
+    # target: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0
+    target: $SNAP/lib/gtk-2.0
+    default-provider: gtk2-common-themes
+  gtk-2-themes:
+    interface: content
+    target: $SNAP/share/themes
+    # target: $SNAP/share/gtk2
+    # target: $SNAP/data-dir/themes
+    default-provider: gtk-common-themes
+  # gtk-3-themes:
+  #   interface: content
+  #   target: $SNAP/usr/share/themes
+  #   default-provider: gtk-common-themes:gtk-3-themes
+  icon-themes:
+    interface: content
+    # target: $SNAP/usr/share/icons
+    target: $SNAP/share/icons
+    # target: $SNAP/data-dir/icons
+    default-provider: gtk-common-themes
+  sound-themes:
+    interface: content
+    # target: $SNAP/usr/share/sounds
+    target: $SNAP/share/sounds
+    # target: $SNAP/data-dir/sounds
+    default-provider: gtk-common-themes
+
+# layout:
+#   $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0:
+#     bind: $SNAP/lib/gtk-2.0
+#   $SNAP/usr/share/themes:
+#     bind: $SNAP/share/gtk2
+#   $SNAP/usr/share/icons:
+#     bind: $SNAP/share/icons
+#   $SNAP/usr/share/sounds:
+#     bind: $SNAP/share/sounds
+
 parts:
+  # required for various environment variables (XDG_DATA_DIRS, GTK_PATH)
   desktop-gtk2:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
@@ -16,9 +64,10 @@ parts:
     make-parameters:
     - FLAVOR=gtk2
     build-packages:
+    - build-essential
     - libgtk2.0-dev
     stage-packages:
-    - libgtk2.0-0
+    - libgtk2.0-bin
   mikutter:
     after:
     - desktop-gtk2
@@ -32,31 +81,34 @@ parts:
     - libidn11-dev # idn-ruby
     override-build: |
       bundle install --without=test
-      cp -a .bundle core mikutter.rb Gemfile LICENSE README $SNAPCRAFT_PART_INSTALL
+      mkdir $SNAPCRAFT_PART_INSTALL/app
+      cp -a .bundle core mikutter.rb Gemfile LICENSE README $SNAPCRAFT_PART_INSTALL/app
     stage-packages:
-    - libglib2.0-0
-    - libatk1.0-0
-    - libcairo2
-    - libcairo-gobject2
-    - libgirepository-1.0-1
-    - libgdk-pixbuf2.0-0
-    - libpango1.0-0
-    - libgtk2.0-0
-    - gir1.2-atk-1.0
-    - gir1.2-gdkpixbuf-2.0
-    - gir1.2-gtk-2.0
-    - gir1.2-pango-1.0
     - libidn11 # idn-ruby
+  mikutter-snap:
+    source: .
+    plugin: nil
+    override-build: |
+      cp mikutter.desktop mikutter.png $SNAPCRAFT_PART_INSTALL
 
 apps:
   mikutter:
+    common-id: net.hachune.mikutter
     environment:
       DISABLE_BUNDLER_SETUP: 1
       GI_TYPELIB_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/girepository-1.0
-    command: desktop-launch $SNAP/mikutter.rb
+      # GTK_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0/modules
+      # see https://forum.snapcraft.io/t/improving-theme-support-for-gtk-2-apps/7693
+      GTK_PATH: $SNAP/lib/gtk-2.0
+      GTK_DATA_PREFIX: $SNAP
+      # XDG_DATA_DIRS: $SNAP/usr/share:$XDG_DATA_DIRS
+      # XDG_DATA_DIRS: $SNAP/data-dir:$XDG_DATA_DIRS
+      # XDG_DATA_DIRS: $SNAP/share:$XDG_DATA_DIRS
+    command: desktop-launch $SNAP/app/mikutter.rb
     plugs:
     - x11
     - desktop
     - desktop-legacy
     - network
     - pulseaudio
+    desktop: mikutter.desktop
