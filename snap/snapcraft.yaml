@@ -56,7 +56,7 @@ parts:
     - -usr/lib/debug
     - -usr/lib/ruby/gems/2.6.0/cache
     - -usr/share
-  desktop-gtk2:
+  desktop-helpers:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
     plugin: make
@@ -64,11 +64,18 @@ parts:
     - FLAVOR=gtk2
     build-packages:
     - build-essential
-    - libgtk2.0-dev
+    organize:
+      bin/desktop-launch: usr/bin/desktop-launch
+      lib/bindtextdomain.so: usr/lib/bindtextdomain.so
+  gtk2:
+    plugin: nil
     stage-packages:
     - libgtk2.0-0
     prime:
-    - -usr/share
+    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0
+    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgdk-x11-2.0.so*
+    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgtk-x11-2.0.so*
+    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgtk2.0-0
   mikutter:
     source: git://toshia.dip.jp/mikutter.git
     source-tag: $SNAPCRAFT_PROJECT_VERSION
@@ -86,8 +93,10 @@ parts:
     after:
     - ruby
     build-packages:
+    - libgtk2.0-dev
     - libidn11-dev # idn-ruby
-    source: git://toshia.dip.jp/mikutter.git
+    build-snaps:
+    - gnome-3-28-1804
     source-tag: $SNAPCRAFT_PROJECT_VERSION
     source-depth: 1
     plugin: nil
@@ -98,6 +107,8 @@ parts:
       cp -a .bundle $SNAPCRAFT_PART_INSTALL/app
     stage-packages:
     - libidn11 # idn-ruby
+    organize:
+      lib/$SNAPCRAFT_ARCH_TRIPLET/libidn.so.11*: usr/lib/$SNAPCRAFT_ARCH_TRIPLET/
     prime:
     - -**/*.o
     - -usr/lib/ruby/gems/2.6.0/cache
