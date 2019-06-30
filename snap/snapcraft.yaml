@@ -117,9 +117,10 @@ parts:
   mikutter-snap:
     source: .
     plugin: dump
-    stage:
-    - mikutter.desktop
-    - mikutter.png
+    organize:
+      mikutter.desktop: usr/share/applications/mikutter.desktop
+    prime:
+    - usr/share/applications/mikutter.desktop
 
 apps:
   mikutter:
@@ -139,4 +140,4 @@ apps:
     - desktop-legacy
     - network
     - pulseaudio
-    desktop: mikutter.desktop
+    desktop: usr/share/applications/mikutter.desktop
