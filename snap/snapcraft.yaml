@@ -35,6 +35,29 @@ plugs:
     default-provider: gtk-common-themes
 
 parts:
+  ruby:
+    build-packages:
+    - build-essential
+    - libssl-dev
+    - libreadline6-dev
+    - libgdbm-dev
+    - zlib1g-dev
+    source: https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
+    plugin: autotools
+    configflags:
+    - --enable-load-relative
+    - --prefix=/usr
+    - --disable-install-doc
+    # stage-packages:
+    # - libgdbm5
+    prime:
+    - -**/*.a
+    - -**/*.o
+    - -usr/include
+    - -usr/lib/pkgconfig
+    - -usr/lib/debug
+    - -usr/lib/ruby/gems/2.6.0/cache
+    - -usr/share
   desktop-gtk2:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
@@ -45,29 +68,50 @@ parts:
     - build-essential
     - libgtk2.0-dev
     stage-packages:
-    - libgtk2.0-bin
+    - libgtk2.0-0
+    prime:
+    - -usr/share
   mikutter:
-    after:
-    - desktop-gtk2
     source: git://toshia.dip.jp/mikutter.git
-    source-tag: 3.9.0-alpha2
+    source-tag: $SNAPCRAFT_PROJECT_VERSION
     source-depth: 1
-    plugin: ruby
-    gems:
-    - bundler
+    plugin: dump
+    organize:
+      core: app/core
+      mikutter.rb: app/mikutter.rb
+      Gemfile: app/Gemfile
+      LICENSE: app/LICENSE
+      README: app/README
+    prime:
+    - app
+  bundle:
+    after:
+    - ruby
     build-packages:
     - libidn11-dev # idn-ruby
-    override-build: |
-      bundle install --without=test
-      mkdir $SNAPCRAFT_PART_INSTALL/app
-      cp -a .bundle core mikutter.rb Gemfile LICENSE README $SNAPCRAFT_PART_INSTALL/app
-    stage-packages:
-    - libidn11 # idn-ruby
-  mikutter-snap:
-    source: .
+    source: git://toshia.dip.jp/mikutter.git
+    source-tag: $SNAPCRAFT_PROJECT_VERSION
+    source-depth: 1
     plugin: nil
     override-build: |
-      cp mikutter.desktop mikutter.png $SNAPCRAFT_PART_INSTALL
+      export GEM_HOME=$SNAPCRAFT_PART_INSTALL/usr/lib/ruby/gems/2.6.0
+      bundle install --without=test --jobs=$SNAPCRAFT_PARALLEL_BUILD_COUNT
+      mkdir $SNAPCRAFT_PART_INSTALL/app
+      cp -a .bundle $SNAPCRAFT_PART_INSTALL/app
+    stage-packages:
+    - libidn11 # idn-ruby
+    prime:
+    # - -**/*.a
+    - -**/*.o
+    - -usr/lib/ruby/gems/2.6.0/cache
+    - -usr/lib/ruby/gems/2.6.0/gems/*/ext
+    - -usr/share
+  mikutter-snap:
+    source: .
+    plugin: dump
+    stage:
+    - mikutter.desktop
+    - mikutter.png
 
 apps:
   mikutter:
