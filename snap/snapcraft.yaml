@@ -48,8 +48,6 @@ parts:
     - --enable-load-relative
     - --prefix=/usr
     - --disable-install-doc
-    # stage-packages:
-    # - libgdbm5
     prime:
     - -**/*.a
     - -**/*.o
@@ -101,7 +99,6 @@ parts:
     stage-packages:
     - libidn11 # idn-ruby
     prime:
-    # - -**/*.a
     - -**/*.o
     - -usr/lib/ruby/gems/2.6.0/cache
     - -usr/lib/ruby/gems/2.6.0/gems/*/ext
