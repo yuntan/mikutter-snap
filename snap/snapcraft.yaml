@@ -1,10 +1,27 @@
 name: mikutter
 version: 3.9.0
-summary: It's moeful
+summary: Simple, powerful, and moeful multi-service client (Mastodon, Twitter)
 description: |
-  TODO
+  Mikutter is a plugin-extensible multi-service client (Mastodon, Twitter).
 
-  `ln -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
+  **FAQ**  
+  Q. How to apply Gtk2 themes?  
+  A. `ln -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
+
+  Q. How to find plugins?  
+  A. See https://github.com/topics/mikutter-plugin .
+
+  Q. How to install plugins?  
+  A. Place plugin files in `~/snap/mikutter/current/.mikutter/plugin/`.
+
+  **LINKS**
+  * Homepage: https://mikutter.hachune.net/
+  * FAQ: https://mikutter.hachune.net/faq
+  * Wiki: https://yuzuki.hachune.net/wiki/FrontPage
+
+  **CONTACT**
+  * Author: toshi_a
+  * Package maintainer: yuntan
 icon: mikutter.png
 license: MIT
 
