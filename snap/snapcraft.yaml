@@ -117,6 +117,7 @@ parts:
     - ruby
     build-packages:
     - libgtk2.0-dev
+    - libgirepository1.0-dev
     - libidn11-dev # idn-ruby
     build-snaps:
     - gnome-3-28-1804
