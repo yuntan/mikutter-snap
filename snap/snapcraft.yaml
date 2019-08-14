@@ -33,13 +33,16 @@ architectures:
 - build-on: armhf
 grade: stable
 confinement: strict
-base: core18
+# make the core version matches to gnome platform version
+base: core
 
 plugs:
-  gnome-3-28-1804:
+  # use gnome-3-26-1604 for libgtk2
+  # libgtk2 is required to enable IME
+  gnome-3-26-1604:
     interface: content
     target: $SNAP/gnome-platform
-    default-provider: gnome-3-28-1804
+    default-provider: gnome-3-26-1604
   gtk-2-engines:
     interface: content
     target: $SNAP/lib/gtk-2.0
@@ -79,6 +82,7 @@ parts:
     - -usr/lib/debug
     - -usr/lib/ruby/gems/2.6.0/cache
     - -usr/share
+
   desktop-helpers:
     source: https://github.com/ubuntu/snapcraft-desktop-helpers.git
     source-subdir: gtk
@@ -90,19 +94,9 @@ parts:
     organize:
       bin/desktop-launch: usr/bin/desktop-launch
       lib/bindtextdomain.so: usr/lib/bindtextdomain.so
-  gtk2:
-    plugin: nil
-    stage-packages:
-    - libgtk2.0-0
-    prime:
-    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/gtk-2.0
-    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgdk-x11-2.0.so*
-    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgtk-x11-2.0.so*
-    - usr/lib/$SNAPCRAFT_ARCH_TRIPLET/libgtk2.0-0
+
   mikutter:
-    source: git://mikutter.hachune.net/mikutter.git
-    source-tag: $SNAPCRAFT_PROJECT_VERSION
-    source-depth: 1
+    source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: dump
     organize:
       core: app/core
@@ -112,6 +106,7 @@ parts:
       README: app/README
     prime:
     - app
+
   bundle:
     after:
     - ruby
@@ -119,11 +114,7 @@ parts:
     - libgtk2.0-dev
     - libgirepository1.0-dev
     - libidn11-dev # idn-ruby
-    build-snaps:
-    - gnome-3-28-1804
-    source: git://mikutter.hachune.net/mikutter.git
-    source-tag: $SNAPCRAFT_PROJECT_VERSION
-    source-depth: 1
+    source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: nil
     override-build: |
       export GEM_HOME=$SNAPCRAFT_PART_INSTALL/usr/lib/ruby/gems/2.6.0
@@ -139,6 +130,7 @@ parts:
     - -usr/lib/ruby/gems/2.6.0/cache
     - -usr/lib/ruby/gems/2.6.0/gems/*/ext
     - -usr/share
+
   mikutter-snap:
     source: .
     plugin: dump
@@ -152,13 +144,13 @@ apps:
     common-id: net.hachune.mikutter
     environment:
       DISABLE_BUNDLER_SETUP: 1
-      GI_TYPELIB_PATH: $SNAP/usr/lib/$SNAPCRAFT_ARCH_TRIPLET/girepository-1.0
       # environment variables for gtk2
       # see https://forum.snapcraft.io/t/improving-theme-support-for-gtk-2-apps/7693
       GTK_PATH: $SNAP/lib/gtk-2.0
       GTK_DATA_PREFIX: $SNAP
-    # set necessary environment variables (XDG_DATA_DIRS, GTK_PATH, etc)
-    command: desktop-launch $SNAP/app/mikutter.rb
+    # desktop-launch: set necessary environment variables (XDG_DATA_DIRS,
+    # GI_TYPELIB_PATH, GTK_PATH, etc), and enable IME
+    command: usr/bin/desktop-launch $SNAP/usr/bin/ruby -x $SNAP/app/mikutter.rb
     plugs:
     - x11
     - desktop
