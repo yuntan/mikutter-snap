@@ -113,7 +113,6 @@ parts:
     build-packages:
     - libgtk2.0-dev
     - libgirepository1.0-dev
-    - libidn11-dev # idn-ruby
     source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: nil
     override-build: |
@@ -121,8 +120,6 @@ parts:
       bundle install --without=test --jobs=$SNAPCRAFT_PARALLEL_BUILD_COUNT
       mkdir $SNAPCRAFT_PART_INSTALL/app
       cp -a .bundle $SNAPCRAFT_PART_INSTALL/app
-    stage-packages:
-    - libidn11 # idn-ruby
     organize:
       lib/$SNAPCRAFT_ARCH_TRIPLET/libidn.so.11*: usr/lib/$SNAPCRAFT_ARCH_TRIPLET/
     prime:
