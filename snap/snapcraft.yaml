@@ -153,5 +153,5 @@ apps:
     - desktop
     - desktop-legacy
     - network
-    - pulseaudio
+    - audio-playback
     desktop: usr/share/applications/mikutter.desktop
