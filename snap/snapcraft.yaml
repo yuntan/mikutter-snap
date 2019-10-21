@@ -68,7 +68,7 @@ parts:
     - libreadline6-dev
     - libgdbm-dev
     - zlib1g-dev
-    source: https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.3.tar.gz
+    source: https://cache.ruby-lang.org/pub/ruby/2.6/ruby-2.6.5.tar.gz
     plugin: autotools
     configflags:
     - --enable-load-relative
