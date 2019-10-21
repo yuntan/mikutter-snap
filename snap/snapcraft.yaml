@@ -61,7 +61,15 @@ plugs:
     default-provider: gtk-common-themes
 
 parts:
+  jemalloc:
+    source: https://github.com/jemalloc/jemalloc/releases/download/5.2.1/jemalloc-5.2.1.tar.bz2
+    plugin: autotools
+    configflags:
+    - --prefix=/usr
+
   ruby:
+    after:
+    - jemalloc
     build-packages:
     - build-essential
     - libssl-dev
@@ -72,6 +80,7 @@ parts:
     plugin: autotools
     configflags:
     - --enable-load-relative
+    - --with-jemalloc
     - --prefix=/usr
     - --disable-install-doc
     prime:
