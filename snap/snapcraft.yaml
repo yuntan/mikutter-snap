@@ -143,7 +143,7 @@ parts:
     source: https://github.com/yuntan/mikutter-pulseaudio.git
     plugin: dump
     organize:
-      .: app/core/plugin/pulseaudio
+      *: app/core/plugin/pulseaudio/
 
   paplay:
     plugin: nil
