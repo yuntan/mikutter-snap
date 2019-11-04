@@ -141,6 +141,10 @@ parts:
     stage-packages:
     - libnotify-bin
 
+  aplay:
+    stage-packages:
+    - alsa-utils
+
   mikutter-snap:
     source: .
     plugin: dump
