@@ -107,6 +107,8 @@ parts:
   mikutter:
     source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: dump
+    override-build: |
+      rm -rf core/plugin/alsa # remove alsa plugin
     organize:
       core: app/core
       mikutter.rb: app/mikutter.rb
@@ -137,15 +139,21 @@ parts:
     - -usr/lib/ruby/gems/2.6.0/gems/*/ext
     - -usr/share
 
+  mikutter-pulseaudio:
+    source: https://github.com/yuntan/mikutter-pulseaudio.git
+    plugin: dump
+    organize:
+      .: app/core/plugin/pulseaudio
+
+  paplay:
+    plugin: nil
+    stage-packages:
+    - pulseaudio-utils
+
   notify-send:
     plugin: nil
     stage-packages:
     - libnotify-bin
-
-  aplay:
-    plugin: nil
-    stage-packages:
-    - alsa-utils
 
   mikutter-snap:
     source: .
