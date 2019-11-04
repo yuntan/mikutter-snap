@@ -142,8 +142,10 @@ parts:
     plugin: dump
     organize:
       mikutter.desktop: usr/share/applications/mikutter.desktop
+      mikutter.png: usr/share/icons/hicolor/256x256/apps/mikutter.png
     prime:
     - usr/share/applications/mikutter.desktop
+    - usr/share/icons/hicolor/256x256/apps/mikutter.png
 
 apps:
   mikutter:
