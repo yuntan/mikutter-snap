@@ -138,10 +138,12 @@ parts:
     - -usr/share
 
   notify-send:
+    plugin: nil
     stage-packages:
     - libnotify-bin
 
   aplay:
+    plugin: nil
     stage-packages:
     - alsa-utils
 
