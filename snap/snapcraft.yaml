@@ -137,6 +137,10 @@ parts:
     - -usr/lib/ruby/gems/2.6.0/gems/*/ext
     - -usr/share
 
+  notify-send:
+    stage-packages:
+    - libnotify-bin
+
   mikutter-snap:
     source: .
     plugin: dump
