@@ -107,8 +107,6 @@ parts:
   mikutter:
     source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: dump
-    override-build: |
-      rm -rf core/plugin/alsa # remove alsa plugin
     organize:
       core: app/core
       mikutter.rb: app/mikutter.rb
@@ -117,6 +115,7 @@ parts:
       README: app/README
     prime:
     - app
+    - -app/core/plugin/alsa # remove alsa plugin
 
   bundle:
     after:
@@ -143,7 +142,10 @@ parts:
     source: https://github.com/yuntan/mikutter-pulseaudio.git
     plugin: dump
     organize:
-      *: app/core/plugin/pulseaudio/
+      .mikutter.yml: app/core/plugin/pulseaudio/
+      README.md: app/core/plugin/pulseaudio/
+      LICENSE: app/core/plugin/pulseaudio/
+      pulseaudio.rb: app/core/plugin/pulseaudio/
 
   paplay:
     plugin: nil
