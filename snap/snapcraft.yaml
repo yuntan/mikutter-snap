@@ -6,7 +6,7 @@ description: |
 
   **FAQ**  
   Q. How to apply Gtk2 themes?  
-  A. `ln -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
+  A. `cp -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
 
   Q. How to find plugins?  
   A. See https://github.com/topics/mikutter-plugin .
@@ -117,6 +117,7 @@ parts:
     - app
     - -app/core/plugin/alsa # remove alsa plugin
 
+  # bundle install
   bundle:
     after:
     - ruby
@@ -138,6 +139,7 @@ parts:
     - -usr/lib/ruby/gems/2.6.0/gems/*/ext
     - -usr/share
 
+  # pulseaudio plugin
   mikutter-pulseaudio:
     source: https://github.com/yuntan/mikutter-pulseaudio.git
     plugin: dump
@@ -147,11 +149,13 @@ parts:
       LICENSE: app/core/plugin/pulseaudio/
       pulseaudio.rb: app/core/plugin/pulseaudio/
 
+  # paplay command
   paplay:
     plugin: nil
     stage-packages:
     - pulseaudio-utils
 
+  # notify-send command
   notify-send:
     plugin: nil
     stage-packages:
