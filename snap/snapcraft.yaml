@@ -6,7 +6,7 @@ description: |
 
   **FAQ**  
   Q. How to apply Gtk2 themes?  
-  A. `cp -s ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
+  A. `cp ~/.gtkrc2.0 ~/snap/mikutter/current/` to apply gtk2 theme setting.
 
   Q. How to find plugins?  
   A. See https://github.com/topics/mikutter-plugin .
