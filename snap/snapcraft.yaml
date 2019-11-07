@@ -163,13 +163,25 @@ parts:
 
   mikutter-snap:
     source: .
-    plugin: dump
-    organize:
-      mikutter.desktop: usr/share/applications/mikutter.desktop
-      mikutter.png: usr/share/icons/hicolor/256x256/apps/mikutter.png
+    plugin: nil
+    build-packages:
+    - imagemagick
+    override-build: |
+      dir=$SNAPCRAFT_PART_INSTALL/usr/share/icons/hicolor/256x256/apps
+      mkdir -p $dir
+      cp mikutter.png $dir/mikutter.png
+
+      for size in 64 48 32 24 22 16; do
+        dir=$SNAPCRAFT_PART_INSTALL/usr/share/icons/hicolor/${size}x${size}/apps
+        mkdir -p $dir
+        magick mikutter.png -resize ${size}x${size} -unsharp 12x6+0.5+0 $dir/mikutter.png
+      done
+
+      dir=$SNAPCRAFT_PART_INSTALL/usr/share/applications
+      mkdir -p $dir
+      cp mikutter.desktop $dir/mikutter.desktop
     prime:
-    - usr/share/applications/mikutter.desktop
-    - usr/share/icons/hicolor/256x256/apps/mikutter.png
+    - usr
 
 apps:
   mikutter:
