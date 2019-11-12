@@ -36,6 +36,25 @@ confinement: strict
 # make the core version matches to gnome platform version
 base: core
 
+apps:
+  mikutter:
+    common-id: net.hachune.mikutter
+    environment:
+      DISABLE_BUNDLER_SETUP: 1
+      # environment variables for gtk2
+      # see https://forum.snapcraft.io/t/improving-theme-support-for-gtk-2-apps/7693
+      GTK_PATH: $SNAP/lib/gtk-2.0
+      GTK_DATA_PREFIX: $SNAP
+    # desktop-launch: set necessary environment variables (XDG_DATA_DIRS,
+    # GI_TYPELIB_PATH, GTK_PATH, etc), and enable IME
+    command: usr/bin/desktop-launch $SNAP/usr/bin/ruby -x $SNAP/app/mikutter.rb
+    plugs:
+    - x11
+    - desktop
+    - desktop-legacy
+    - network
+    - audio-playback
+
 plugs:
   # use gnome-3-26-1604 for libgtk2
   # libgtk2 is required to enable IME
@@ -160,22 +179,3 @@ parts:
     plugin: nil
     stage-packages:
     - libnotify-bin
-
-apps:
-  mikutter:
-    common-id: net.hachune.mikutter
-    environment:
-      DISABLE_BUNDLER_SETUP: 1
-      # environment variables for gtk2
-      # see https://forum.snapcraft.io/t/improving-theme-support-for-gtk-2-apps/7693
-      GTK_PATH: $SNAP/lib/gtk-2.0
-      GTK_DATA_PREFIX: $SNAP
-    # desktop-launch: set necessary environment variables (XDG_DATA_DIRS,
-    # GI_TYPELIB_PATH, GTK_PATH, etc), and enable IME
-    command: usr/bin/desktop-launch $SNAP/usr/bin/ruby -x $SNAP/app/mikutter.rb
-    plugs:
-    - x11
-    - desktop
-    - desktop-legacy
-    - network
-    - audio-playback
