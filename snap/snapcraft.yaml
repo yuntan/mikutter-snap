@@ -22,7 +22,7 @@ description: |
   **CONTACT**
   * Author: toshi_a
   * Package maintainer: yuntan
-icon: mikutter.png
+icon: snap/gui/mikutter.png
 license: MIT
 
 type: app
@@ -161,28 +161,6 @@ parts:
     stage-packages:
     - libnotify-bin
 
-  mikutter-snap:
-    source: .
-    plugin: nil
-    build-packages:
-    - imagemagick
-    override-build: |
-      dir=$SNAPCRAFT_PART_INSTALL/usr/share/icons/hicolor/256x256/apps
-      mkdir -p $dir
-      cp mikutter.png $dir/mikutter.png
-
-      for size in 64 48 32 24 22 16; do
-        dir=$SNAPCRAFT_PART_INSTALL/usr/share/icons/hicolor/${size}x${size}/apps
-        mkdir -p $dir
-        convert mikutter.png -resize ${size}x${size} -unsharp 12x6+0.5+0 $dir/mikutter.png
-      done
-
-      dir=$SNAPCRAFT_PART_INSTALL/usr/share/applications
-      mkdir -p $dir
-      cp mikutter.desktop $dir/mikutter.desktop
-    prime:
-    - usr
-
 apps:
   mikutter:
     common-id: net.hachune.mikutter
@@ -201,4 +179,3 @@ apps:
     - desktop-legacy
     - network
     - audio-playback
-    desktop: usr/share/applications/mikutter.desktop
