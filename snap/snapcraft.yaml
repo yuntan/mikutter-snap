@@ -1,5 +1,5 @@
 name: mikutter
-version: 3.9.6
+version: 3.9.7
 summary: Simple, powerful, and moeful multi-service client (Mastodon, Twitter)
 description: |
   Mikutter is a plugin-extensible multi-service client (Mastodon, Twitter).
