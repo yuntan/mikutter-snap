@@ -128,13 +128,14 @@ parts:
     plugin: dump
     organize:
       core: app/core
+      plugin: app/plugin
       mikutter.rb: app/mikutter.rb
       Gemfile: app/Gemfile
       LICENSE: app/LICENSE
       README: app/README
     prime:
     - app
-    - -app/core/plugin/alsa # remove alsa plugin
+    - -app/plugin/alsa # remove alsa plugin
 
   # bundle install
   bundle:
@@ -150,8 +151,6 @@ parts:
       bundle install --without=test --jobs=$SNAPCRAFT_PARALLEL_BUILD_COUNT
       mkdir $SNAPCRAFT_PART_INSTALL/app
       cp -a .bundle $SNAPCRAFT_PART_INSTALL/app
-    organize:
-      lib/$SNAPCRAFT_ARCH_TRIPLET/libidn.so.11*: usr/lib/$SNAPCRAFT_ARCH_TRIPLET/
     prime:
     - -**/*.o
     - -usr/lib/ruby/gems/2.6.0/cache
@@ -163,10 +162,10 @@ parts:
     source: https://github.com/yuntan/mikutter-pulseaudio.git
     plugin: dump
     organize:
-      .mikutter.yml: app/core/plugin/pulseaudio/
-      README.md: app/core/plugin/pulseaudio/
-      LICENSE: app/core/plugin/pulseaudio/
-      pulseaudio.rb: app/core/plugin/pulseaudio/
+      .mikutter.yml: app/plugin/pulseaudio/
+      README.md: app/plugin/pulseaudio/
+      LICENSE: app/plugin/pulseaudio/
+      pulseaudio.rb: app/plugin/pulseaudio/
 
   # paplay command
   paplay:
