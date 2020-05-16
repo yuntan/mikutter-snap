@@ -124,7 +124,7 @@ parts:
       lib/bindtextdomain.so: usr/lib/bindtextdomain.so
 
   mikutter:
-    source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
+    source: https://mikutter.hachune.net/bin/mikutter-$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: dump
     organize:
       core: app/core
@@ -144,7 +144,7 @@ parts:
     build-packages:
     - libgtk2.0-dev
     - libgirepository1.0-dev
-    source: https://mikutter.hachune.net/bin/mikutter.$SNAPCRAFT_PROJECT_VERSION.tar.gz
+    source: https://mikutter.hachune.net/bin/mikutter-$SNAPCRAFT_PROJECT_VERSION.tar.gz
     plugin: nil
     override-build: |
       export GEM_HOME=$SNAPCRAFT_PART_INSTALL/usr/lib/ruby/gems/2.6.0
